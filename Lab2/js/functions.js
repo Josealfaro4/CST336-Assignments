@@ -16,6 +16,7 @@
             if(guessCount === 1){
                 guesses.innerHTML = 'Previous guesses: ';
             }
+            
             guesses.innerHTML += userGuess + ' ';
                     
                 if(userGuess === randomNumber){
@@ -37,6 +38,15 @@
                     else if(userGuess > randomNumber){
                         lowOrHi.innerHTML = 'Last game was too high!';
                     }
+                    else if(userGuess > 99){
+                        lastResult.innerHTML = 'Not a valid number!';
+                        guessCount = 0;
+                    }/*
+                    else if(userGuess === " "){
+                        lowOrHi.innerHTML = 'Not a valid input';
+                        guessCount = 0;
+                    
+                    }*/
                                 
                 }
                     
@@ -69,7 +79,9 @@
             guessField.value = '';
             guessField.focus();
                     
-            lastResult.style.background = 'white';
+            lastResult.style.backgroundColor = 'white';
                     
             randomNumber = Math.floor(Math.random() * 99) + 1;
         }
+        
+       
