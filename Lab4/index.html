@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html> 
+    <head>
+        <title> Sign Up Page </title>
+         <link href="app.css" rel="stylesheet" type="text/css" />
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    </head>
+    <body>
+        <h1>Sign Up</h1>
+        <form id="signupForm" method="get" action="welcome.html">
+            <div class="name">
+            First Name: <input id="fName" type="text" name="fName"><br>
+            </div>
+            <div class="lastName">
+            Last Name: <input id="lName" type="text" name="lName"><br>
+            </div>
+            
+            Gender: <input type="radio" name="gender" value="m"> Male
+                    <input type="radio" name="gender" value="f"> Female<br><br>
+            <div class="zip">     
+            Zip Code: <input type="text" name="zip" id="zip"><span id="zipError"></span><br>
+            </div>
+            <div class = "points">
+            City: <span id="city"></span><br>
+            Latitude: <span id="lat"></span><br>
+            Longitude: <span id="long"></span><br><br>
+            </div>
+            <div class="state">
+                State:
+                <select id="state" name="state">
+                    <option value="">Select One</option>
+                    <option value="ca"> California</option>
+                    <option value="ny"> New York</option>
+                    <option value="tx"> Texas</option>
+                    <option value="ar"> Arkansas</option>
+                    <option value="az"> Arizona</option>  
+                </select><br />
+            </div>
+            Select a County: <select id="county"></select><br><br>
+            <div class="username">
+            Desired Username: <input type="text" id="username" name="username"><span id="usernameError"></span><br>
+            </div>
+            <div class="password">
+            Password: <input type="password" id="password" name="password"><span id="passwordLength"></span><br>
+            </div>
+            <div class="passwordAgain">
+            Password Again: <input type="password" id="passwordAgain"><span id="passwordAgainError"></span><br>
+            </div>
+            <input id="signInButton" type="submit" value="Sign Up!"/>
+        </form>
+    <script>
+        
+        var usernameAvailable = false;
+        var zipCodeAvailable = false;
+
+        //displaying city from api after trying a zip code
+        $("#zip").on("change", function(){
+           // alert($("#zip").val());
+           $.ajax({
+               method: "GET",
+               url:"https://itcdland.csumb.edu/~milara/ajax/cityInfoByZip.php?zip=93955",
+               dataType:"json",
+               data:{ "zip": $("#zip").val() },
+               success: function(result, status){
+                   //alert(result.city);
+                   
+                   if(result.available){
+                      zipCodeAvailable = true; 
+                   }else {
+                       $("#zipError").html("Zip Code not found!");
+                       $("#zipError").css("color", "red");
+                       usernameAvailable = false;
+                   }
+                   
+                   $("#city").html(result.city);
+                   $("#lat").html(result.latitude);
+                   $("#long").html(result.longitude);
+               }
+           });
+        }); // zip
+        
+        $("#state").on("change", function(){
+            //alert($("#state").val());
+            
+            $.ajax({
+                method: "GET",
+                url: "https://itcdland.csumb.edu/~milara/ajax/countyList.php?state=ca",
+                dataType: "json",
+                data: { "state": $("#state").val() },
+                success : function(result, status){
+                    //alert(result[0].county);
+                
+                    $("#county").html("<option> Select One </option>");
+                    for(let i = 0; i < result.length; i++){
+                        $("#county").append("<option>" + result[i].county + "</option>");
+                    }
+                }
+            }); // ajax
+        }); //state
+        
+        $("#username").change(function(){
+            //alert($("#username").val());
+            
+            $.ajax({
+                method: "GET",
+                url: "https://cst336.herokuapp.com/projects/api/usernamesAPI.php?username=eeny",
+                dataType: "json",
+                data: { "username": $("#username").val() },
+                success: function(result, status){
+                    
+                    if(result.available){
+                        $("#usernameError").html("Username is available!");
+                        $("#usernameError").css("color", "green");
+                        usernameAvailable = true;
+                    }
+                    else{
+                        $("#usernameError").html("Username is unavailable!");
+                        $("#usernameError").css("color", "red");
+                        usernameAvailable = false;
+                    }
+                }
+            }); //ajax
+        }); //username
+        
+        $("#signupForm").on("submit", function(e){
+            //alert("Submitting form...");
+            if(!isFormValid()){
+                event.preventDefault();
+            }
+            
+        });
+        
+        function isFormValid(){
+            isValid = true;
+            if(!usernameAvailable){
+                isValid = false;
+            }
+            if($("#username").val().length == 0){
+                isValid = false;
+                $("#usernameError").html("Username is required");
+                $("#usernameError").css("color", "red");
+            }
+            
+            if($("#password").val() != $("#passwordAgain").val()){
+                $("#passwordAgainError").html("Password Mismatch! Please Try Again");
+                $("#passwordAgainError").css("color", "red");
+                isValid = false;
+               
+            }
+            if($("#password").val().length >= 6){
+                    isValid= true;
+                } else{
+                    $("#passwordLength").html("Password needs to be at least 6 characters");
+                    isValid = false;
+                }
+            return isValid;
+        }
+    </script>
+        
+    </body>
+</html>

@@ -1,0 +1,29 @@
+body{
+    text-align: center;
+    background-color: #c69595;
+}
+h1{
+    background-color: black;
+    color:white;
+    padding:15px;
+}
+#username, #password, #passwordAgain, #zip, #lName,#fName{
+    padding: 5px;
+    
+}
+
+#usernameError, #passwordLength, #passwordAgainError, #zipError{
+    padding-left: 15px;
+}
+
+#signInButton:hover{
+    background: rgba(0, 0, 255, 0.2);
+}
+
+.lastName, .zip, .state, .username, .password, .passwordAgain, .name{
+    padding-bottom:  15px;
+}
+
+.points {
+    padding-right: 135px;
+}
