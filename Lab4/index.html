@@ -27,13 +27,9 @@
             </div>
             <div class="state">
                 State:
-                <select id="state" name="state">
+                <select id="state"> 
                     <option value="">Select One</option>
-                    <option value="ca"> California</option>
-                    <option value="ny"> New York</option>
-                    <option value="tx"> Texas</option>
-                    <option value="ar"> Arkansas</option>
-                    <option value="az"> Arizona</option>  
+                
                 </select><br />
             </div>
             Select a County: <select id="county"></select><br><br>
@@ -51,30 +47,41 @@
     <script>
         
         var usernameAvailable = false;
-        var zipCodeAvailable = false;
-
+        
+        $.ajax({
+    	method: "GET",
+    	url: "https://itcdland.csumb.edu/~milara/ajax/states.php",
+    	dataType: "json",
+    	success: function(result,status) {
+    		for (let i = 0; i < result.length; i++){
+    			$("#state").append("<option value='" + result[i].usps  + "'>" + result[i].state + "</option>");
+    		}
+    	}
+    });
+    
         //displaying city from api after trying a zip code
         $("#zip").on("change", function(){
            // alert($("#zip").val());
            $.ajax({
                method: "GET",
-               url:"https://itcdland.csumb.edu/~milara/ajax/cityInfoByZip.php?zip=93955",
+               url:"https://itcdland.csumb.edu/~milara/ajax/cityInfoByZip.php",
                dataType:"json",
                data:{ "zip": $("#zip").val() },
                success: function(result, status){
                    //alert(result.city);
                    
-                   if(result.available){
-                      zipCodeAvailable = true; 
-                   }else {
-                       $("#zipError").html("Zip Code not found!");
+                   if(result == false){
+                       $("#zipError").html("Zip Code does not exist");
                        $("#zipError").css("color", "red");
-                       usernameAvailable = false;
+                   }
+                   else{
+                       $("#zipError").html("");
+                       
+                    $("#city").html(result.city);
+                    $("#lat").html(result.latitude);
+                    $("#long").html(result.longitude);
                    }
                    
-                   $("#city").html(result.city);
-                   $("#lat").html(result.latitude);
-                   $("#long").html(result.longitude);
                }
            });
         }); // zip
@@ -84,17 +91,17 @@
             
             $.ajax({
                 method: "GET",
-                url: "https://itcdland.csumb.edu/~milara/ajax/countyList.php?state=ca",
+                url: "https://itcdland.csumb.edu/~milara/ajax/countyList.php",
                 dataType: "json",
                 data: { "state": $("#state").val() },
                 success : function(result, status){
                     //alert(result[0].county);
-                
                     $("#county").html("<option> Select One </option>");
                     for(let i = 0; i < result.length; i++){
                         $("#county").append("<option>" + result[i].county + "</option>");
                     }
                 }
+                  
             }); // ajax
         }); //state
         
@@ -109,13 +116,12 @@
                 success: function(result, status){
                     
                     if(result.available){
-                        $("#usernameError").html("Username is available!");
-                        $("#usernameError").css("color", "green");
+                        $("#usernameError").html("Username is available!").css("color", "green");
+                        //$("#usernameError").css("color", "green");
                         usernameAvailable = true;
                     }
                     else{
-                        $("#usernameError").html("Username is unavailable!");
-                        $("#usernameError").css("color", "red");
+                        $("#usernameError").html("Username is unavailable!").css("color", "red");
                         usernameAvailable = false;
                     }
                 }
@@ -137,22 +143,19 @@
             }
             if($("#username").val().length == 0){
                 isValid = false;
-                $("#usernameError").html("Username is required");
-                $("#usernameError").css("color", "red");
+                $("#usernameError").html("Username is required").css("color", "red");
             }
             
-            if($("#password").val() != $("#passwordAgain").val()){
-                $("#passwordAgainError").html("Password Mismatch! Please Try Again");
-                $("#passwordAgainError").css("color", "red");
+            if($("#password").val() !== $("#passwordAgain").val()){
+                $("#passwordAgainError").html("Password Mismatch! Please Try Again").css("color", "red");
                 isValid = false;
                
             }
-            if($("#password").val().length >= 6){
-                    isValid= true;
-                } else{
-                    $("#passwordLength").html("Password needs to be at least 6 characters");
-                    isValid = false;
-                }
+            
+            if ($("#password").val().length < 6){
+                $("#passwordAgainError").html("Password must contains 6 or more characters.");
+                isValid = false;
+            }
             return isValid;
         }
     </script>

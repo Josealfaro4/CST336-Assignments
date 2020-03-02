@@ -27,3 +27,11 @@ h1{
 .points {
     padding-right: 135px;
 }
+
+#signupForm{
+    font-size: 18px;
+}
+
+#signInButton{
+    font-size: 20px;
+}
