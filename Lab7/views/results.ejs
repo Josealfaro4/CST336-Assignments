@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title> Pixabay Results</title>
+        <link rel="stylesheet" href="/css/styles.css" type="text/css">
+    </head>
+    <body>
+        <h1> Pixabay Search Results </h1>
+        <form action="/results">
+            <div class="keyword">
+                Keyword: <input type="text" name="keyword"><br>
+            </div>
+            
+            <div id="orientation">
+            Orientation: <select name="orientation">
+                <option value="v">Vertical</option>
+                <option value="h">Horizontal</option>
+        </select>
+        </div>
+            <br> <button id="search">Search!</button>
+        </form> <br>
+        
+    <div class="row">
+        <div class="column">
+            <% randImg1 = Math.floor(Math.random() * images.hits.length); %>
+            Likes: <%= images.hits[randImg1].likes %> 
+            <img id = random src='<%= images.hits[randImg1].largeImageURL %>' width='250'><br>
+        </div>
+    
+        <div class="column">
+            <% randImg2 = Math.floor(Math.random() * images.hits.length); %>
+            Likes: <%= images.hits[randImg2].likes %> 
+            <img id = random src='<%= images.hits[randImg2].largeImageURL %>' width='250'><br>
+        </div>
+        
+        <div class="column">
+            
+            <% randImg3 = Math.floor(Math.random() * images.hits.length); %>
+            <span>Likes: <%= images.hits[randImg3].likes %> </span>
+            <img id = random src='<%= images.hits[randImg3].largeImageURL %>' width='250'><br>
+        </div>
+        
+        <div class="column">
+            <% randImg4 = Math.floor(Math.random() * images.hits.length); %>
+            <span>Likes: <%= images.hits[randImg4].likes %> </span>
+            <img id = random src='<%= images.hits[randImg4].largeImageURL %>' width='250'><br>
+        </div>
+    </div>
+    
+    
+    </body>
+</html>
