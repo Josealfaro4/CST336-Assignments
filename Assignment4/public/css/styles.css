@@ -1,0 +1,68 @@
+body { 
+ background-color: #BC8A65;
+}
+
+header, main, nav, footer {
+ text-align: center;
+}
+
+nav a{
+ padding: 15px;
+ padding-bottom: 2px;
+ font-size: 2.2em;
+ text-decoration: none;
+ color: white;
+}
+
+nav a:hover{
+ border-bottom:2px;
+ font-size: 2.5em;
+ transition: .9s;
+}
+
+#me, #welcomeText{
+ float: left;
+ text-align: left;
+}
+
+#me2, #newText{
+ text-align: center;
+}
+
+footer {
+ position: absolute;
+ bottom: 0;
+ width: 100%;
+ height: 9.0rem;
+ font-size: 14px;
+ color: white;
+}
+
+#firstList{
+ float: left;
+ text-align: left;
+ padding-left: 50px;
+ color:white;
+ font-size: 16px;
+}
+
+#secondList{
+ float: right;
+ text-align: left;
+ padding-right: 30px;
+ color:white;
+ font-size: 16px;
+}
+
+h1{ 
+ font-family: 'Optima';
+ font-size: 5em;
+ margin-bottom: 0px;
+ color: #8A0808;
+} 
+
+p {
+ font-size: 18px;
+ color: white;
+}
+
