@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 
-var knockknock = require('knock-knock-jokes'); // additional node package used.
+var knockknock = require('knock-knock-jokes'); // additional node package used. It displays a joke in the console
 
 
 app.engine('html', require('ejs').renderFile);
