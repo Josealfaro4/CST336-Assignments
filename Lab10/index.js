@@ -56,7 +56,6 @@ app.get('/login', function(req, res) {
 
 
 app.post('/login', function(req, res){
-    // console.log("username = " + req.body.username + " password = " + req.body.password);
     let isLoginValid = checkLoginCredentials(req.body.username, req.body.password); 
     console.log(isLoginValid);
     if(isLoginValid){
@@ -86,7 +85,6 @@ app.get("/author", isAuthenticated, function(req, res) {
             throw error;
         }
         if(results.length) authors = results;
-        // console.log(authors);
         res.render('author', {authors: authors});
     });
 }); 
@@ -107,14 +105,11 @@ app.get("/author/:aid/bio", isAuthenticated, function(req, res) {
 
 
 // ADD NEW AUTHOR
-/* Create a new author - Get author information */
 app.get('/author/new', isAuthenticated, function(req, res){
     res.render('author_new');
 });
 
-/* Create a new author - Add author into DBMS */
 app.post('/author/new', isAuthenticated, function(req, res){
-   //console.log(req.body);
    connection.query('SELECT COUNT(*) FROM l9_author;', function(error, result){
        if(error) throw error;
        if(result.length){
@@ -144,7 +139,6 @@ app.post('/author/new', isAuthenticated, function(req, res){
 });
 
 //EDIT AUTHOR
-/* Edit an author record - Display an author information */
 app.get('/author/:aid/edit', isAuthenticated, function(req, res){
     console.log("AUTHOR ID:"); 
     console.log(req.params.aid);
